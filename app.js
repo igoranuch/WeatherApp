@@ -1,6 +1,7 @@
 const api_key = "710a3dd3ac195eca9fbdbe4ca6bb0421";
 const button = document.getElementById("searchButton");
 const cardDiv = document.getElementById("card");
+
 let city = null;
 
 seeder();
