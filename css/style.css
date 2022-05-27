@@ -40,8 +40,23 @@ body {
   justify-content: center;
 }
 
-#search {
+#underCardContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   margin-top: 9rem;
+}
+
+#error {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: red;
+  opacity: 0.5;
+}
+
+#search {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -146,6 +161,7 @@ body {
   width: 50%;
   flex-direction: column;
   font-weight: 100;
+  padding-left: 3.5rem;
 }
 
 #mainRightSide {
@@ -153,7 +169,7 @@ body {
   flex-direction: column;
   gap: 1rem;
   justify-content: center;
-  padding-left: 3rem;
+  padding-left: 1rem;
   align-items: left;
   height: 100%;
   width: 50%;
@@ -163,7 +179,6 @@ body {
 #mainLeftSideFooter {
   display: flex;
   justify-content: left;
-  padding-left: 3rem;
   width: 100%;
   padding-bottom: 2rem;
 }
@@ -187,7 +202,6 @@ body {
   display: flex;
   align-items: center;
   justify-content: right;
-  padding-left: 3rem;
   height: 100%;
   width: 50%;
 }
@@ -209,6 +223,12 @@ body {
 
 .rightSideContainer {
   display: flex;
+}
+
+.rightSideSvgDiv {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .rightSideImg {

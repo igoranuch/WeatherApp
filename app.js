@@ -1,28 +1,39 @@
 const api_key = "710a3dd3ac195eca9fbdbe4ca6bb0421";
-const button = document.getElementById("searchButton");
-const cardDiv = document.getElementById("card");
-
-let isSwitched;
-let city = null;
+const searchButton = document.querySelector("#searchButton");
+const cardDiv = document.querySelector("#card");
+const errorContainer = document.querySelector("#error");
+const loader = document.createElement("div");
+loader.classList.add("lds-dual-ring");
 
 seeder();
 
 function seeder(cityName = "London") {
-  const loader = document.createElement("div");
-  loader.classList.add("lds-dual-ring");
+  const getCityGeocode = fetch(`https://api.openweathermap.org/data/2.5/weather?q=${cityName}&APPID=${api_key}`);
 
   cardDiv.appendChild(loader);
 
-  const getCityGeocode = fetch(`https://api.openweathermap.org/data/2.5/weather?q=${cityName}&APPID=${api_key}`);
-
   getCityGeocode
-    .then((response) => response.json())
+    .then((response) => {
+      if (response.ok) {
+        return response.json();
+      } else if (response.status === 404) {
+        throw new Error("Can't find such city");
+      } else {
+        throw new Error("Something went wrong");
+      }
+    })
     .then((result) => {
+      let isSwitched;
+
+      let city = normalizeCityData(result);
+
       cardDiv.innerHTML = "";
-      city = normalizeCityData(result);
+      errorContainer.innerHTML = "";
+
       if (!cardDiv.hasChildNodes()) {
         createCardDOM();
       }
+
       render(city);
 
       const convertToCelciusButton = document.querySelector("#celciusButton");
@@ -51,15 +62,22 @@ function seeder(cityName = "London") {
           feelsLikeValue.innerText = `Feels like: ${city.feelsLike.f}°`;
 
           isSwitched = true;
-          console.log(isSwitched);
         }
       });
+    })
+    .catch((error) => {
+      if (error == "Error: Can't find such city") {
+        errorContainer.innerText = `${error}`;
+      } else {
+        cardDiv.innerHTML = "";
+        cardDiv.innerText = `${error}`;
+      }
     });
 }
 
-button.addEventListener("click", () => {
-  cardDiv.innerHTML = "";
+searchButton.addEventListener("click", () => {
   const city = document.getElementById("cityInput").value;
+  cardDiv.innerHTML = "";
   seeder(city);
 });
 
@@ -77,7 +95,6 @@ function render(normalizedCity) {
   const humiditySvgImg = document.querySelector("#humiditySvgImg");
   const celciusButton = document.querySelector("#celciusButton");
   celciusButton.classList.add("buttonActive");
-  isSwitched = false;
 
   headerCityInfo.innerText = `${normalizedCity.name}, ${normalizedCity.country}`;
   headerTimeStamp.innerText = `As of ${normalizedCity.time}`;
@@ -200,6 +217,8 @@ const weatherIconByDescription = {
   Snow: "icons/snow.svg",
   Mist: "icons/mist.svg",
   "Broken clouds": "icons/overcastClouds.svg",
+  "Heavy intensity rain": "icons/drizzle.svg",
+  "Moderate rain": "icons/rain.svg",
 };
 
 const weatherInfoIcons = {
