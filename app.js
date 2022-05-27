@@ -1,4 +1,5 @@
-const api_key = "710a3dd3ac195eca9fbdbe4ca6bb0421";
+import { api_key } from "./api.js";
+
 const searchButton = document.querySelector("#searchButton");
 const cardDiv = document.querySelector("#card");
 const errorContainer = document.querySelector("#error");
@@ -10,6 +11,7 @@ seeder();
 function seeder(cityName = "London") {
   const getCityGeocode = fetch(`https://api.openweathermap.org/data/2.5/weather?q=${cityName}&APPID=${api_key}`);
 
+  errorContainer.innerHTML = "";
   cardDiv.appendChild(loader);
 
   getCityGeocode
@@ -28,7 +30,6 @@ function seeder(cityName = "London") {
       let city = normalizeCityData(result);
 
       cardDiv.innerHTML = "";
-      errorContainer.innerHTML = "";
 
       if (!cardDiv.hasChildNodes()) {
         createCardDOM();
