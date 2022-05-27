@@ -2,6 +2,7 @@ const api_key = "710a3dd3ac195eca9fbdbe4ca6bb0421";
 const button = document.getElementById("searchButton");
 const cardDiv = document.getElementById("card");
 
+let isSwitched;
 let city = null;
 
 seeder();
@@ -23,6 +24,36 @@ function seeder(cityName = "London") {
         createCardDOM();
       }
       render(city);
+
+      const convertToCelciusButton = document.querySelector("#celciusButton");
+      const convertToFahrenheitButton = document.querySelector("#fahrenheitButton");
+      const temperatureValue = document.querySelector("#temperatureValue");
+      const feelsLikeValue = document.querySelector("#feelsLikeValue");
+
+      convertToCelciusButton.addEventListener("click", () => {
+        if (isSwitched) {
+          temperatureValue.innerText = `${city.temp.c}°`;
+          feelsLikeValue.innerText = `Feels like: ${city.feelsLike.c}°`;
+
+          convertToCelciusButton.classList.add("buttonActive");
+          convertToFahrenheitButton.classList.remove("buttonActive");
+
+          isSwitched = false;
+        }
+      });
+
+      convertToFahrenheitButton.addEventListener("click", () => {
+        if (!isSwitched) {
+          convertToCelciusButton.classList.remove("buttonActive");
+          convertToFahrenheitButton.classList.add("buttonActive");
+
+          temperatureValue.innerText = `${city.temp.f}°`;
+          feelsLikeValue.innerText = `Feels like: ${city.feelsLike.f}°`;
+
+          isSwitched = true;
+          console.log(isSwitched);
+        }
+      });
     });
 }
 
@@ -44,8 +75,9 @@ function render(normalizedCity) {
   const windSpeedSvgImg = document.querySelector("#windSpeedSvgImg");
   const humidityValue = document.querySelector("#humidityValue");
   const humiditySvgImg = document.querySelector("#humiditySvgImg");
-  const cecliusDiv = document.querySelector("#cecliusDiv");
-  cecliusDiv.classList.add("buttonActive");
+  const celciusButton = document.querySelector("#celciusButton");
+  celciusButton.classList.add("buttonActive");
+  isSwitched = false;
 
   headerCityInfo.innerText = `${normalizedCity.name}, ${normalizedCity.country}`;
   headerTimeStamp.innerText = `As of ${normalizedCity.time}`;
@@ -69,8 +101,8 @@ function createCardDOM() {
   const headerCityInfo = createCustomElement("div", "headerCityInfo", headerInfo);
   const headerTimeStamp = createCustomElement("div", "headerTimeStamp", headerInfo);
 
-  const cecliusDiv = createCustomElement("button", "cecliusDiv", headerConverter, "converter", "°C");
-  const fahrenheitDiv = createCustomElement("button", "fahrenheitDiv", headerConverter, "converter", "°F");
+  const celciusButton = createCustomElement("button", "celciusButton", headerConverter, "converter", "°C");
+  const fahrenheitButton = createCustomElement("button", "fahrenheitButton", headerConverter, "converter", "°F");
 
   const mainLeftSide = createCustomElement("div", "mainLeftSide", main);
   const mainRightSide = createCustomElement("div", "mainRightSide", main);
@@ -160,6 +192,7 @@ const weatherIconByDescription = {
   "Clear sky": "icons/clearsky.svg",
   "Few clouds": "icons/clouds.svg",
   "Overcast clouds": "icons/overcastClouds.svg",
+  "Light rain": "icons/rain.svg",
   Drizzle: "icons/drizzle.svg",
   Rain: "icons/rain.svg",
   "Shower rain": "icons/showerRain.svg",

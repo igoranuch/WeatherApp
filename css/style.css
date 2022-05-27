@@ -218,7 +218,3 @@ body {
 .buttonActive {
   outline: 3px solid #54a2e6;
 }
-
-.buttonInactive {
-  outline: none;
-}
