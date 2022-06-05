@@ -101,7 +101,11 @@ function render(normalizedCity) {
   headerTimeStamp.innerText = `As of ${normalizedCity.time}`;
   mainLeftSideFooterText.innerText = normalizedCity.description;
   temperatureValue.innerText = `${normalizedCity.temp.c}°`;
-  weatherIconImage.setAttribute("src", weatherIconByDescription[normalizedCity.description]);
+  if (weatherIconByDescription[normalizedCity.description]) {
+    weatherIconImage.setAttribute("src", weatherIconByDescription[normalizedCity.description]);
+  } else {
+    weatherIconImage.setAttribute("src", weatherIconByDescription["Broken clouds"]);
+  }
   feelsLikeValue.innerText = `Feels like: ${normalizedCity.feelsLike.c}°`;
   feelsLikeSvgImg.setAttribute("src", weatherInfoIcons.feelsLike);
   windSpeedValue.innerText = `Wind: ${normalizedCity.windSpeed} ms`;

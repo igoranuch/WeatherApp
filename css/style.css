@@ -187,6 +187,10 @@ body {
   font-size: 30px;
   opacity: 0.85;
   font-weight: 300;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  overflow: hidden;
 }
 
 #mainLeftSideMain {
